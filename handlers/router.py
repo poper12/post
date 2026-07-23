@@ -1,4 +1,4 @@
-from telegram import Update
+from telegram import Update, MessageOriginChannel
 from telegram.ext import ContextTypes
 
 from db.users import get_state, set_state
@@ -11,7 +11,10 @@ from handlers.create_post import (
     handle_schedule_time,
 )
 from handlers.edit_post import handle_edit_text
-from handlers.adsgram import handle_adsgram_blockid, handle_adsgram_duration
+from handlers.adsgram import (
+    handle_adsgram_blockid,
+    handle_adsgram_duration,
+)
 from states import (
     AWAITING_POST_CONTENT,
     AWAITING_REEDIT_CONTENT,
@@ -39,8 +42,12 @@ async def route_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not update.message:
         return
 
-    # Forwarded-channel-message flow for connecting a new channel
-    if update.message.forward_from_chat:
+    message = update.effective_message
+
+    if (
+        message.forward_origin
+        and isinstance(message.forward_origin, MessageOriginChannel)
+    ):
         handled = await handle_forwarded_channel_message(update, context)
         if handled:
             return
@@ -50,10 +57,12 @@ async def route_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     state, state_data = await get_state(user.id)
+
     if not state:
-        return  # no active flow, ignore stray messages
+        return
 
     handler = STATE_HANDLERS.get(state)
+
     if handler:
         await handler(update, context, state_data)
 
