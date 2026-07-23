@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: campus-post-bot
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: MONGO_URI
+        sync: false
+      - key: DB_NAME
+        value: campus_post_bot
+      - key: OWNER_ID
+        sync: false
+      - key: WEBHOOK_URL
+        sync: false
+      - key: TIMEZONE
+        value: Asia/Kolkata
+      - key: ADSGRAM_MINIAPP_LINK
+        sync: false
+      - key: PYTHON_VERSION
+        value: 3.11.9
