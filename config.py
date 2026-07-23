@@ -3,8 +3,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-BOT_TOKEN = os.environ["BOT_TOKEN"]
-MONGO_URI = os.environ["MONGO_URI"]
+BOT_TOKEN = os.environ["8344576196:AAF6DGhtCTkXndflArkW7fKV0qQEBOjL-Dk"]
+MONGO_URI = os.environ["mongodb+srv://vishnumdot67_db_user:9IZOH90Zg3K5Xkyv@cluster0.xwzo4bv.mongodb.net/?appName=Cluster0"]
 DB_NAME = os.environ.get("DB_NAME", "campus_post_bot")
 OWNER_ID = int(os.environ.get("OWNER_ID", "0"))
 
